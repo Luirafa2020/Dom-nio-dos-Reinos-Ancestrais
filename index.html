@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Domínio dos Reinos Ancestrais</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="logo.svg" type="image/x-icon">
+</head>
+<body>
+    <div id="game-container">
+        <h1>Domínio dos Reinos Ancestrais</h1>
+
+        <div id="allegiance-track-area">
+            <h2>Trilha da Lealdade</h2>
+            <div id="allegiance-track">
+                <div class="track-space" data-value="-2">Rebelião (-2)</div>
+                <div class="track-space" data-value="-1">Desfavor (-1)</div>
+                <div class="track-space" data-value="0" id="track-neutral">Neutra (0)</div>
+                <div class="track-space" data-value="1">Favor (+1)</div>
+                <div class="track-space" data-value="2">Apoio Total (+2)</div>
+                <div id="allegiance-marker">M</div>
+            </div>
+        </div>
+
+        <div id="game-board">
+            <div id="opponent-area" class="player-area">
+                <h3>Oponente (<span id="opponent-name">Computador</span>)</h3>
+                <div class="player-stats">
+                    Ouro: <span id="opponent-gold">10</span> | Poder: <span id="opponent-might">0</span> | Cartas: <span id="opponent-hand-count">4</span>
+                </div>
+                <div class="zones-display">
+                    Zona da Espada: <span id="opponent-sword-influence">0</span> Inf. |
+                    Zona da Moeda: <span id="opponent-coin-influence">0</span> Inf. |
+                    Zona do Pergaminho: <span id="opponent-scroll-influence">0</span> Inf.
+                </div>
+                <div id="opponent-played-cards" class="played-cards-zone">
+                    <!-- Cartas do oponente em jogo -->
+                </div>
+            </div>
+
+            <div id="crown-zone-area">
+                <h2>Zona da Coroa</h2>
+                <p>Influência Jogador: <span id="player-crown-influence-display">0</span></p>
+                <p>Influência Oponente: <span id="opponent-crown-influence-display">0</span></p>
+            </div>
+
+            <div id="player-area" class="player-area">
+                <h3>Você (<span id="player-name">Jogador 1</span>)</h3>
+                <div class="player-stats">
+                    Ouro: <span id="player-gold">10</span> | Poder: <span id="player-might">0</span>
+                </div>
+                <div class="zones-display">
+                    Zona da Espada: <span id="player-sword-influence">0</span> Inf. |
+                    Zona da Moeda: <span id="player-coin-influence">0</span> Inf. |
+                    Zona do Pergaminho: <span id="player-scroll-influence">0</span> Inf.
+                </div>
+                <div id="player-hand" class="hand">
+                    <!-- Cartas do jogador -->
+                </div>
+                <div id="player-played-cards" class="played-cards-zone">
+                    <!-- Cartas do jogador em jogo -->
+                </div>
+            </div>
+        </div>
+
+        <div id="game-controls">
+            <p>Turno: <span id="turn-counter">1</span> - Vez de: <span id="current-player-turn">Jogador 1</span></p>
+            <button id="end-turn-button">Encerrar Turno</button>
+            <p id="game-message"></p>
+            <div id="deck-info">
+                Seu Deck: <span id="player-deck-count">0</span> | Seu Descarte: <span id="player-discard-count">0</span>
+            </div>
+        </div>
+
+        <div id="card-tooltip" class="tooltip"></div>
+    </div> <!-- Fim do game-container -->
+
+    <div id="tutorial-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <button id="close-tutorial" class="modal-close-button">×</button>
+            <div style="text-align: center;">
+                <img src="logo.svg" alt="" style="width: 65px; height: 65px; margin: 0;">
+            </div>
+            <h2>Bem-vindo ao Domínio dos Reinos Ancestrais!</h2>
+            <p><strong>Seu Objetivo:</strong></p>
+            <ul>
+                <li>Acumule <strong>15 de Influência na Zona da Coroa</strong>, OU</li>
+                <li>Mantenha o marcador da <strong>Trilha da Lealdade em Apoio Total (+2)</strong> a seu favor desde o final do seu turno até o final do seu próximo turno completo.</li>
+            </ul>
+            <p><strong>Recursos:</strong></p>
+            <ul>
+                <li><strong>Ouro (O):</strong> Usado para jogar a maioria das cartas. Ganho controlando a Zona da Moeda ou por efeitos.</li>
+                <li><strong>Poder (P):</strong> Usado para algumas cartas de Ação militar. Ganho controlando a Zona da Espada.</li>
+            </ul>
+            <p><strong>Zonas de Influência:</strong></p>
+            <ul>
+                <li><strong>Espada (Militar):</strong> Controlar gera Poder no final do seu turno.</li>
+                <li><strong>Moeda (Economia):</strong> Controlar gera Ouro no final do seu turno.</li>
+                <li><strong>Pergaminho (Conhecimento):</strong> Controlar permite comprar uma carta extra no final do seu turno.</li>
+                <li><strong>Coroa:</strong> Onde a influência direta para a vitória é acumulada com cartas específicas.</li>
+            </ul>
+            <p><strong>Trilha da Lealdade:</strong></p>
+            <p>Representa o apoio do reino. Cartas podem movê-la. Sua posição (+2 a -2) ativa <strong>Efeitos de Lealdade</strong> bônus em suas cartas e é uma condição de vitória.</p>
+            <p><strong>Turno:</strong></p>
+            <ol>
+                <li>Você compra uma carta (automaticamente, exceto no primeiro turno do jogo).</li>
+                <li>Jogue cartas da sua mão pagando seus custos. Seguidores vão para zonas de influência, Ações têm efeitos imediatos.</li>
+                <li>Passe o mouse sobre as cartas para ver seus detalhes.</li>
+                <li>Clique em "Encerrar Turno".</li>
+                <li>Bônus de controle de zona são aplicados.</li>
+            </ol>
+            <p>Boa sorte em sua conquista!</p>
+        </div>
+    </div>
+
+    <!-- Elemento de áudio para música de fundo -->
+    <audio id="background-music" loop></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
