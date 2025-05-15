@@ -8,7 +8,7 @@ Esse é um jogo de cartas diferente, onde você luta pela coroa e tem que conseg
 
 **O jogo:**
 
-![image](https://github.com/user-attachments/assets/7e73fdc5-7194-4c03-8c01-60d1283d80b4)
+![image](https://github.com/user-attachments/assets/9be67099-87ef-44b1-af43-38cf3eb19090)
 
 Cada carta tem sua característica e abilidade, use elas com sabedoria.
 
