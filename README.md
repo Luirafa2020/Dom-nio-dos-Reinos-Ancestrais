@@ -1,6 +1,6 @@
 # Domínio dos Reinos Ancestrais
 
-Esse é um jogo de cartas diferente, onde você luta pela coroa e tem que conseguir alcançar o apoio total da população:
+Esse é um jogo de cartas diferente, onde você luta pela coroa e tem que conseguir alcançar o apoio total da população, ele é um esquema de batalha por turno, e ele é contra um computador:
 
 **Tela do início:**
 
