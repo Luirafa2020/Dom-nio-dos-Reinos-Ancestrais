@@ -322,12 +322,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this.isGameOver) return;
             this.logMessage("Oponente está planejando sua estratégia...");
 
-            let खेला = 0; // Quantas cartas o oponente já jogou neste turno
+            let cards = 0; // Quantas cartas o oponente já jogou neste turno
             const MAX_PLAYS_PER_TURN = 3; // Limite de cartas que a IA pode jogar (ajuste conforme necessário)
             let madeAPlayThisIteration = true;
 
             // Loop para jogar múltiplas cartas
-            while (खेला < MAX_PLAYS_PER_TURN && madeAPlayThisIteration && !this.isGameOver) {
+            while (cards < MAX_PLAYS_PER_TURN && madeAPlayThisIteration && !this.isGameOver) {
                 madeAPlayThisIteration = false; // Reseta para esta iteração do loop
 
                 const playableCards = this.opponent.hand.filter(card =>
@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 if (criticalPlayMade) {
-                    खेला++;
+                    cards++;
                     madeAPlayThisIteration = true;
                     this.updateDOM();
                     if (this.isGameOver) break; // Se a jogada crítica ganhou/perdeu o jogo
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (taxCard) {
                         this.logMessage(`IA: "Os cofres estão vazios! ${taxCard.name} ao resgate!"`);
                         this.playCard('opponent', taxCard.uniqueId, null);
-                        खेला++;
+                        cards++;
                         madeAPlayThisIteration = true;
                         this.updateDOM();
                         if (this.isGameOver) break;
@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (bestPlay.card) {
                     this.logMessage(`IA joga ${bestPlay.card.name}${bestPlay.targetZone ? ` na zona ${bestPlay.targetZone}` : ''}. (Score: ${bestPlay.score.toFixed(1)})`);
                     this.playCard('opponent', bestPlay.card.uniqueId, bestPlay.targetZone);
-                    खेला++;
+                    cards++;
                     madeAPlayThisIteration = true;
                     this.updateDOM();
                     if (this.isGameOver) break; 
@@ -514,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } // Fim do while (múltiplas jogadas)
 
-            if (खेला === 0) {
+            if (cards === 0) {
                 this.logMessage("Oponente não fez nenhuma jogada neste turno.");
             }
             this.updateDOM(); // Final update
