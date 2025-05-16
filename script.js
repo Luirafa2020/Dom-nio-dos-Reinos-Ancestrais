@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Definições de Cartas --- (Permanece o mesmo)
+    // --- Definições de Cartas --- (Permanece o mesmo da sua última versão)
     const cardDatabase = [
         { id: "k001", name: "Guarda Leal", type: "Seguidor", cost: { gold: 1 }, zone: "sword", influence: 1, text: "Básico e confiável.", allegianceEffect: null },
         { id: "k002", name: "Cavaleiro Veterano", type: "Seguidor", cost: { gold: 3 }, zone: "sword", influence: 3, text: "Sua experiência inspira lealdade.", allegianceEffect: { condition: (pos) => pos >= 1, bonusInfluence: 2, description: "Lealdade >= +1" } },
@@ -10,26 +10,26 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: "c001", name: "Conselheiro Astuto", type: "Seguidor", cost: { gold: 4 }, zone: "crown", influence: 1, text: "Sussurra palavras de influência na corte.", onPlay: (player, game) => game.shiftAllegiance(player.id === 'player' ? 1 : -1) },
         { id: "c002", name: "Nobre Influente", type: "Seguidor", cost: { gold: 6 }, zone: "crown", influence: 3, text: "Seu prestígio é inegável.", allegianceEffect: { condition: (pos) => pos === 2, bonusInfluence: 2, description: "Lealdade == +2" } },
         { id: "a001", name: "Decreto de Mobilização", type: "Ação", cost: { gold: 2, might: 1 }, text: "Convoca forças para a zona da Espada.", effect: (player, game) => game.addZoneInfluence(player.id, 'sword', 3) },
-        { 
-            id: "a002", 
-            name: "Investimento Real", 
-            type: "Ação", 
-            cost: { gold: 2 }, 
-            text: "Invista 2 Ouros. O retorno é incerto, podendo variar de 2 a 5 Ouros.", 
-            effect: (player, game) => { 
+        {
+            id: "a002",
+            name: "Investimento Real",
+            type: "Ação",
+            cost: { gold: 2 },
+            text: "Invista 2 Ouros. O retorno é incerto, podendo variar de 2 a 5 Ouros.",
+            effect: (player, game) => {
                 const minReturn = 2;
                 const maxReturn = 5;
                 const goldEarned = Math.floor(Math.random() * (maxReturn - minReturn + 1)) + minReturn;
                 player.gold += goldEarned;
-                let profit = goldEarned - 2; 
+                let profit = goldEarned - 2;
                 let message = `${player.name} investiu e recebeu ${goldEarned} Ouro. `;
                 if (profit > 0) {
                     message += `Um lucro de ${profit} Ouro!`;
                 } else if (profit === 0) {
                     message += `Recuperou o investimento, sem lucro.`;
-                } 
-                game.logMessage(message); 
-            } 
+                }
+                game.logMessage(message);
+            }
         },
         { id: "a003", name: "Intriga na Corte", type: "Ação", cost: { gold: 3 }, text: "Manipula a lealdade e desestabiliza o oponente.", allegianceEffect: {condition: (pos) => pos >=1, description: "Lealdade >=+1"}, effect: (player, game) => {
             game.shiftAllegiance(player.id === 'player' ? 1 : -1);
@@ -45,17 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }},
         { id: "a004", name: "Sabotagem Econômica", type: "Ação", cost: { gold: 3, might: 1 }, text: "Interfere nas finanças do adversário.", effect: (player, game) => game.addZoneInfluence(player.id === 'player' ? 'opponent' : 'player', 'coin', -3) },
-        { 
-            id: "a005", 
-            name: "Recebimento dos Impostos", 
-            type: "Ação", 
-            cost: { gold: 0 }, 
-            text: "Colete Ouro. Se estiver sem Ouro, o recebimento é de 3 Ouros, caso contrário, 2 Ouros.", 
+        {
+            id: "a005",
+            name: "Recebimento dos Impostos",
+            type: "Ação",
+            cost: { gold: 0 },
+            text: "Colete Ouro. Se estiver sem Ouro, o recebimento é de 3 Ouros, caso contrário, 2 Ouros.",
             effect: (player, game) => {
                 let goldEarned = 0;
-                // Verifica o ouro do jogador ANTES de adicionar o ganho desta carta.
-                // Como o custo é 0, player.gold aqui é o estado atual.
-                if (player.gold === 0) { 
+                if (player.gold === 0) {
                     goldEarned = 3;
                     game.logMessage(`${player.name} estava sem ouro e recebeu um bônus nos impostos: +${goldEarned} Ouro!`);
                 } else {
@@ -63,16 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     game.logMessage(`${player.name} recebeu ${goldEarned} Ouro dos impostos.`);
                 }
                 player.gold += goldEarned;
-            }, 
-            allegianceEffect: null 
+            },
+            allegianceEffect: null
         }
     ];
 
-    // --- Resto do objeto game e suas funções (initialize, sounds, createDeck, etc.) ---
-    // Nenhuma alteração necessária nessas outras partes para este ajuste específico da IA.
-    // Cole o resto do seu script.js aqui, da versão anterior.
-    // A única função que realmente precisa ser mostrada com a mudança é opponentPlayTurn.
-
+    // --- Objeto game e suas funções (initialize, sons, createDeck, etc.) ---
+    // (Cole o resto do seu script.js anterior aqui, exceto opponentPlayTurn)
     let game = {
         player: { id: 'player', name: "Jogador 1", gold: 10, might: 0, crownInfluence: 0, zoneInfluence: { sword: 0, coin: 0, scroll: 0 }, deck: [], hand: [], discard: [], playedCards: [] },
         opponent: { id: 'opponent', name: "Computador", gold: 10, might: 0, crownInfluence: 0, zoneInfluence: { sword: 0, coin: 0, scroll: 0 }, deck: [], hand: [], discard: [], playedCards: [] },
@@ -209,9 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cardIndex === -1) { this.logMessage("Carta não encontrada na mão."); return false; }
             const cardData = player.hand[cardIndex];
 
-            // Guardar o ouro do jogador ANTES de pagar o custo, para a carta a005
-            // const goldBeforePlayingCard = player.gold; // Não é mais estritamente necessário aqui com a lógica atual de a005
-
             if (cardData.cost.gold > player.gold || (cardData.cost.might && cardData.cost.might > player.might)) {
                 this.logMessage(`${player.name} não pode pagar por ${cardData.name}.`); return false;
             }
@@ -244,14 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const playedCardInstance = {...cardData, currentInfluence: currentInfluence, assignedZone: actualZone };
                 player.playedCards.push(playedCardInstance);
             }
-
-            if (cardData.allegianceEffect && cardData.allegianceEffect.onPlayBonus && cardData.allegianceEffect.condition(currentAllegianceForPlayer)) {
-                // A lógica original parecia ter onPlayBonus como algo distinto. Se for para executar após o efeito principal,
-                // e não como parte do onPlay, essa é a posição.
-                // Contudo, normalmente onPlayBonus de lealdade seria parte do cardData.onPlay ou chamado logo após.
-                // Por ora, vou assumir que está ok se chamado aqui como um efeito adicional.
-                 // cardData.allegianceEffect.onPlayBonus(player, this); // Se for um efeito SEPARADO de lealdade
-            }
+            
             if (cardData.allegianceEffect && cardData.allegianceEffect.drawCard && cardData.allegianceEffect.condition(currentAllegianceForPlayer)) {
                 for(let i=0; i< cardData.allegianceEffect.drawCard; i++) this.drawCard(player);
                 this.logMessage(`${player.name} comprou ${cardData.allegianceEffect.drawCard} carta(s) por Lealdade de ${cardData.name}!`);
@@ -322,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.updateDOM();
             if (this.currentPlayerId === 'opponent' && !this.isGameOver) {
                 document.getElementById('end-turn-button').disabled = true;
-                setTimeout(() => this.opponentPlayTurn(), 1800 + Math.random() * 1000);
+                setTimeout(() => this.opponentPlayTurn(), 1000); // Reduzido delay para IA "pensar"
             } else if (!this.isGameOver) { document.getElementById('end-turn-button').disabled = false; }
         },
         checkVictoryConditions() {
@@ -332,98 +317,210 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         },
 
+        // --- IA MUITO AVANÇADA (ESTRUTURA) ---
         opponentPlayTurn() {
             if (this.isGameOver) return;
-            this.logMessage("Oponente está calculando sua jogada...");
-            const playableCards = this.opponent.hand.filter(card =>
-                card.cost.gold <= this.opponent.gold && (!card.cost.might || card.cost.might <= this.opponent.might)
-            );
+            this.logMessage("Oponente está planejando sua estratégia...");
 
-            if (playableCards.length === 0) {
-                this.logMessage("Oponente não tem cartas jogáveis.");
-                setTimeout(() => this.endTurn(), 1000); return;
-            }
+            let खेला = 0; // Quantas cartas o oponente já jogou neste turno
+            const MAX_PLAYS_PER_TURN = 3; // Limite de cartas que a IA pode jogar (ajuste conforme necessário)
+            let madeAPlayThisIteration = true;
 
-            // **Ajuste na IA: Checagem prioritária para a005 se ouro = 0**
-            if (this.opponent.gold === 0) {
-                const taxCard = playableCards.find(card => card.id === "a005");
-                if (taxCard) {
-                    this.logMessage(`Oponente está sem ouro e joga ${taxCard.name} como prioridade!`);
-                    this.playCard('opponent', taxCard.uniqueId, null); // Ações não têm targetZone
+            // Loop para jogar múltiplas cartas
+            while (खेला < MAX_PLAYS_PER_TURN && madeAPlayThisIteration && !this.isGameOver) {
+                madeAPlayThisIteration = false; // Reseta para esta iteração do loop
+
+                const playableCards = this.opponent.hand.filter(card =>
+                    card.cost.gold <= this.opponent.gold && (!card.cost.might || card.cost.might <= this.opponent.might)
+                );
+
+                if (playableCards.length === 0) {
+                    // this.logMessage("Oponente sem mais cartas jogáveis neste momento.");
+                    break; // Sai do loop de múltiplas jogadas
+                }
+
+                let bestPlay = { card: null, score: -Infinity, targetZone: null };
+
+                // --- FASE 1: JOGADAS CRÍTICAS (VERIFICAÇÃO A CADA CARTA POTENCIAL) ---
+                let criticalPlayMade = false;
+                for (const card of playableCards) {
+                    let potentialCrownInf = this.opponent.crownInfluence;
+                    if (card.type === "Seguidor" && (card.zone === "crown" || (card.assignedZone && card.assignedZone === "crown"))) {
+                        potentialCrownInf += card.influence || 0;
+                        if (card.allegianceEffect && card.allegianceEffect.bonusInfluence && card.allegianceEffect.condition(-this.allegianceTrackPosition)) {
+                            potentialCrownInf += card.allegianceEffect.bonusInfluence;
+                        }
+                    }
+                    if (potentialCrownInf >= this.maxCrownInfluence) {
+                        this.logMessage(`IA: "A vitória por Coroa é minha com ${card.name}!"`);
+                        this.playCard('opponent', card.uniqueId, 'crown');
+                        criticalPlayMade = true; break;
+                    }
+
+                    let potentialAllegiance = this.allegianceTrackPosition;
+                    if (card.onPlay && card.id === "c001") potentialAllegiance--;
+                    if (card.effect && card.id === "a003") potentialAllegiance--;
+                    if (potentialAllegiance <= -2 && (this.allegianceTrackPosition > -2 || (this.allegianceTrackPosition === -2 && this.allegianceWinPendingPlayer === 'opponent'))) {
+                        this.logMessage(`IA: "A Lealdade do reino será minha com ${card.name}!"`);
+                        this.playCard('opponent', card.uniqueId, card.type === "Seguidor" ? (card.zone || 'crown') : null);
+                        criticalPlayMade = true; break;
+                    }
+                    if (this.player.crownInfluence >= this.maxCrownInfluence - 3 && card.type === "Seguidor" && card.zone === "crown") {
+                        this.logMessage(`IA: "Devo defender a Coroa com ${card.name}!"`);
+                        this.playCard('opponent', card.uniqueId, 'crown');
+                        criticalPlayMade = true; break;
+                    }
+                    if (this.allegianceTrackPosition === 2 && this.allegianceWinPendingPlayer === 'player' && (card.id === "c001" || card.id === "a003")) {
+                        this.logMessage(`IA: "Preciso reverter essa Lealdade traiçoeira com ${card.name}!"`);
+                        this.playCard('opponent', card.uniqueId, card.type === "Seguidor" ? (card.zone || 'crown') : null);
+                        criticalPlayMade = true; break;
+                    }
+                }
+                if (criticalPlayMade) {
+                    खेला++;
+                    madeAPlayThisIteration = true;
                     this.updateDOM();
-                    if (!this.isGameOver) setTimeout(() => this.endTurn(), 1000);
-                    return; // Termina a função da IA aqui, pois já fez a jogada prioritária
-                }
-            }
-
-            let bestPlay = { card: null, score: -Infinity, targetZone: null };
-
-            playableCards.forEach(card => {
-                let potentialTargetZones = [card.zone]; // Para ações, card.zone é undefined, então o loop de zona só roda uma vez.
-                if (card.type === "Seguidor" && !card.zone) {
-                    potentialTargetZones = ['sword', 'coin', 'scroll', 'crown'];
+                    if (this.isGameOver) break; // Se a jogada crítica ganhou/perdeu o jogo
+                    continue; // Volta para o início do while para reavaliar
                 }
 
-                potentialTargetZones.forEach(zone => {
-                    // Se é uma ação e estamos iterando zonas (o que não faz sentido para ações sem alvo de zona), pular.
-                    // Mas como actions têm card.zone = undefined, este loop de zona só vai executar uma vez para elas.
-                    if (card.type === "Ação" && zone && card.zone !== zone) { // Adicionado card.zone !== zone
-                        //  Isso previne que uma ação que não tem card.zone seja avaliada múltiplas vezes com zonas aleatórias.
-                        //  Para ações, zone será undefined na primeira (e única) iteração deste loop interno.
-                        //  Se a ação tiver uma zona específica (raro, mas possível), ela será avaliada.
-                        return;
+                // --- FASE 2: JOGADA DE NECESSIDADE (Recebimento dos Impostos) ---
+                if (this.opponent.gold === 0) {
+                    const taxCard = playableCards.find(c => c.id === "a005");
+                    if (taxCard) {
+                        this.logMessage(`IA: "Os cofres estão vazios! ${taxCard.name} ao resgate!"`);
+                        this.playCard('opponent', taxCard.uniqueId, null);
+                        खेला++;
+                        madeAPlayThisIteration = true;
+                        this.updateDOM();
+                        if (this.isGameOver) break;
+                        continue;
                     }
+                }
 
+                // --- FASE 3: AVALIAÇÃO HEURÍSTICA DAS JOGADAS ---
+                // A função evaluatePlay agora é interna ou precisa de acesso ao 'this' (game)
+                const evaluatePlay = (cardToEvaluate, targetZoneForEval) => {
                     let score = 0;
-                    const currentAllegianceForOpponent = -this.allegianceTrackPosition;
-                    let goldAfterCost = this.opponent.gold - card.cost.gold;
+                    const currentOpponentAllegiance = -this.allegianceTrackPosition;
+                    const goldAfterCost = this.opponent.gold - (cardToEvaluate.cost.gold || 0);
 
-                    score -= card.cost.gold * 0.5; if (card.cost.might) score -= card.cost.might * 0.8;
-                    if (card.type === "Seguidor") {
-                        let inf = card.influence;
-                        if (card.allegianceEffect && card.allegianceEffect.bonusInfluence && card.allegianceEffect.condition(currentAllegianceForOpponent)) inf += card.allegianceEffect.bonusInfluence;
-                        if (zone === 'crown') score += inf * 2.5; else if (zone) score += inf * 1.5;
-                        if (zone && this.opponent.zoneInfluence[zone] < this.player.zoneInfluence[zone]) score += inf * 0.5;
-                        else if (zone && this.opponent.zoneInfluence[zone] > this.player.zoneInfluence[zone]) score += inf * 0.2;
+                    score -= (cardToEvaluate.cost.gold || 0) * 0.7; // Ouro é precioso
+                    score -= (cardToEvaluate.cost.might || 0) * 1.0;
+
+                    // Ganho de Recursos Imediato
+                    if (cardToEvaluate.id === "a002") score += (3.5 - (cardToEvaluate.cost.gold || 0)) * 1.0;
+                    else if (cardToEvaluate.id === "a005") {
+                        score += ((this.opponent.gold === 0 ? 3 : 2) - (cardToEvaluate.cost.gold || 0)) * 2.0; // Muito valioso
+                        if (this.opponent.gold === 0) score += 20; // Prioridade máxima
+                    } else if (cardToEvaluate.id === "m002") {
+                        let goldGain = 2;
+                        if (cardToEvaluate.allegianceEffect && cardToEvaluate.allegianceEffect.condition(currentOpponentAllegiance)) goldGain += 2;
+                        score += goldGain * 1.0;
                     }
-                    if (card.allegianceEffect && card.allegianceEffect.condition(currentAllegianceForOpponent)) {
-                        score += 2; if (card.allegianceEffect.drawCard) score += card.allegianceEffect.drawCard * 3;
-                    }
-                    if (card.onPlay) {
-                        if (card.id==="m002") score += 2 * 0.8;
-                        if (card.id==="c001") { if (this.allegianceTrackPosition > -2) score += 4; if (this.allegianceTrackPosition === 2) score += 6;}
-                    }
-                    if (card.allegianceEffect && card.allegianceEffect.onPlayBonus && card.allegianceEffect.condition(currentAllegianceForOpponent)) { if (card.id==="m002") score += 2 * 0.8; }
-                    if (card.type === "Ação") {
-                        if (card.id === "a001") score += 3 * 1.5;
-                        if (card.id === "a002") {
-                            const expectedReturn = (2+5)/2;
-                            score += (expectedReturn - card.cost.gold) * 0.9;
+
+                    // Influência e Controle de Zona
+                    if (cardToEvaluate.type === "Seguidor") {
+                        let inf = cardToEvaluate.influence || 0;
+                        if (cardToEvaluate.allegianceEffect && cardToEvaluate.allegianceEffect.bonusInfluence && cardToEvaluate.allegianceEffect.condition(currentOpponentAllegiance)) {
+                            inf += cardToEvaluate.allegianceEffect.bonusInfluence;
                         }
-                        if (card.id === "a005") {
-                            let goldGain = (goldAfterCost === 0 && card.cost.gold === 0) ? 3 : 2; // Verifica se o ouro *seria* 0 após o custo 0
-                            score += goldGain * 1.5; // Aumenta o peso de ganhar ouro com a005
-                            if (goldAfterCost === 0 && card.cost.gold === 0) score += 10; // Grande bônus se estiver sem ouro
+                        let zoneImportance = 1.0;
+                        if (targetZoneForEval === 'crown') zoneImportance = 3.5;
+                        else if (targetZoneForEval === 'coin') zoneImportance = 2.0;
+                        else if (targetZoneForEval === 'scroll') zoneImportance = 1.8;
+                        else if (targetZoneForEval === 'sword') zoneImportance = 1.5;
+                        score += inf * zoneImportance;
+
+                        if (targetZoneForEval && targetZoneForEval !== 'crown') {
+                            const oppZoneInf = this.opponent.zoneInfluence[targetZoneForEval] || 0;
+                            const playerZoneInf = this.player.zoneInfluence[targetZoneForEval] || 0;
+                            if (oppZoneInf + inf > playerZoneInf && oppZoneInf <= playerZoneInf) score += 4.0 * zoneImportance;
+                            else if (oppZoneInf + inf > playerZoneInf) score += 1.5 * zoneImportance;
+                            else if (playerZoneInf > 0 && oppZoneInf + inf <= playerZoneInf) score += 0.8 * zoneImportance;
                         }
-                        if (card.id === "a003") { if (this.allegianceTrackPosition > -2) score += 3; if (this.allegianceTrackPosition === 2) score += 5; if (currentAllegianceForOpponent >=1 && this.player.hand.length > 0) score += 3.5; }
-                        if (card.id === "a004") score += 3 * 1.2;
                     }
-                    if (zone === 'crown' && (this.opponent.crownInfluence + (card.influence || 0)) >= this.maxCrownInfluence) score += 1000;
-                    if (card.id === "c001" && this.allegianceTrackPosition === -1 && this.allegianceWinPendingPlayer !== 'opponent') score += 500;
-                    if (score > bestPlay.score) bestPlay = { card, score, targetZone: (card.type === "Ação" ? null : zone) }; // Ações não têm targetZone
+
+                    // Manipulação de Lealdade
+                    let allegianceChange = 0;
+                    if (cardToEvaluate.id === "c001" || cardToEvaluate.id === "a003") allegianceChange = -1;
+                    if (allegianceChange !== 0) {
+                        score += allegianceChange * -3.0; // Mover a seu favor (negativo para oponente é bom)
+                        if (this.allegianceTrackPosition === 2 && allegianceChange <0) score += 15; // Impede vitória do jogador
+                        if (this.allegianceTrackPosition === -1 && allegianceChange <0) score += 12; // Move para -2 (vitória iminente)
+                        
+                        this.opponent.hand.forEach(hc => { // Sinergia com outras cartas na mão
+                            if (hc.uniqueId === cardToEvaluate.uniqueId) return;
+                            if (hc.allegianceEffect && hc.allegianceEffect.condition(-(this.allegianceTrackPosition + allegianceChange)) && 
+                               !(hc.allegianceEffect.condition(currentOpponentAllegiance))) {
+                                score += 3.5; 
+                            }
+                        });
+                    }
+
+                    // Efeitos de Lealdade da Própria Carta
+                    if (cardToEvaluate.allegianceEffect && cardToEvaluate.allegianceEffect.condition(currentOpponentAllegiance)) {
+                        score += 3.0; 
+                        if (cardToEvaluate.allegianceEffect.drawCard) score += cardToEvaluate.allegianceEffect.drawCard * 5.0; 
+                        if (cardToEvaluate.allegianceEffect.bonusInfluence) score += 2.0; 
+                        if (cardToEvaluate.allegianceEffect.onPlayBonus) score += 3.0; 
+                    }
+                    
+                    // Efeitos de Ação Específicos
+                    if (cardToEvaluate.type === "Ação") {
+                         if (cardToEvaluate.id === "a001") score += 3 * 1.5; 
+                         if (cardToEvaluate.id === "a003" && cardToEvaluate.allegianceEffect.condition(currentOpponentAllegiance) && this.player.hand.length > 0) {
+                             score += Math.min(this.player.hand.length, 3) * 2.0; // Descarte é mais forte
+                         }
+                         if (cardToEvaluate.id === "a004") { 
+                            if(this.player.zoneInfluence.coin > 0) score += Math.min(3, this.player.zoneInfluence.coin) * 2.0; // Remover ouro é bom
+                            else score -= 2.0; 
+                         }
+                    }
+                    // Evitar ficar com pouco ouro se tiver cartas caras
+                    if (goldAfterCost < 3 && this.opponent.hand.some(hc => hc.cost.gold >= 4 && hc.uniqueId !== cardToEvaluate.uniqueId)) {
+                        score -= 4; 
+                    }
+                    return score;
+                };
+
+                bestPlay = { card: null, score: 0.5, targetZone: null }; // Limiar para considerar uma jogada "boa o suficiente"
+
+                playableCards.forEach(card => {
+                    let potentialTargetZones = [card.zone];
+                    if (card.type === "Seguidor" && !card.zone) {
+                        potentialTargetZones = ['sword', 'coin', 'scroll', 'crown'];
+                    }
+                    potentialTargetZones.forEach(zone => {
+                        if (card.type === "Ação" && zone && card.zone !== zone) return;
+                        const currentScore = evaluatePlay(card, (card.type === "Ação" ? null : zone));
+                        if (currentScore > bestPlay.score) {
+                            bestPlay = { card, score: currentScore, targetZone: (card.type === "Ação" ? null : zone) };
+                        }
+                    });
                 });
-            });
-            if (bestPlay.card) {
-                this.logMessage(`Oponente escolheu jogar ${bestPlay.card.name}${bestPlay.targetZone ? ` na zona ${bestPlay.targetZone}` : ''}. (Score: ${bestPlay.score.toFixed(1)})`);
-                this.playCard('opponent', bestPlay.card.uniqueId, bestPlay.targetZone);
-            } else this.logMessage("Oponente não encontrou uma jogada vantajosa.");
-            this.updateDOM();
+
+                if (bestPlay.card) {
+                    this.logMessage(`IA joga ${bestPlay.card.name}${bestPlay.targetZone ? ` na zona ${bestPlay.targetZone}` : ''}. (Score: ${bestPlay.score.toFixed(1)})`);
+                    this.playCard('opponent', bestPlay.card.uniqueId, bestPlay.targetZone);
+                    खेला++;
+                    madeAPlayThisIteration = true;
+                    this.updateDOM();
+                    if (this.isGameOver) break; 
+                } else {
+                    // Nenhuma jogada considerada boa o suficiente nesta iteração
+                    // this.logMessage("IA não encontrou mais jogadas vantajosas neste turno.");
+                    madeAPlayThisIteration = false; // Para sair do loop while
+                }
+            } // Fim do while (múltiplas jogadas)
+
+            if (खेला === 0) {
+                this.logMessage("Oponente não fez nenhuma jogada neste turno.");
+            }
+            this.updateDOM(); // Final update
             if (!this.isGameOver) setTimeout(() => this.endTurn(), 1000);
         },
 
-        // --- Resto das funções (announceWinner, logMessage, updateDOM, updateAllegianceMarker, renderHands, renderPlayedCards, createCardElement) ---
-        // Nenhuma alteração necessária nessas outras partes para este ajuste específico da IA.
-        // Cole o resto do seu script.js aqui, da versão anterior.
         announceWinner(player, reason = "Condição de Vitória") {
             if (this.isGameOver) return;
             this.isGameOver = true;
