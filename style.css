@@ -1,71 +1,75 @@
+/* Estilos Base (Mobile First Approach - Começamos com estilos para telas pequenas) */
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Evita barras de rolagem no nível do body */
+    overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #333; /* Fundo escuro se o container não cobrir tudo por algum motivo */
+    background-color: #333;
+    font-size: 14px; /* Base font size para cálculos com rem/em */
 }
 
 #game-container {
     width: 100%;
     height: 100%;
-    max-width: none; /* Remove a limitação de largura máxima */
-    background-color: #f0f0f0; /* Cor de fundo principal do jogo */
+    background-color: #f0f0f0;
     color: #333;
-    padding: 10px; /* Pequeno padding interno */
-    box-sizing: border-box; /* Padding e borda incluídos na largura/altura */
+    padding: 5px; /* Menor padding em telas pequenas */
+    box-sizing: border-box;
     display: flex;
-    flex-direction: column; /* Organiza as seções principais verticalmente */
-    justify-content: space-between; /* Distribui espaço entre as seções */
-    overflow: hidden; /* Evita barras de rolagem dentro do container principal */
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
 }
 
-h1 { /* Título principal um pouco menor e com menos margem para tela cheia */
-    font-size: 1.8em;
+h1 {
+    font-size: clamp(1.4em, 4vw, 1.8em); /* Fonte fluida */
     color: #5a3a1a;
     text-align: center;
-    margin: 5px 0 10px 0;
+    margin: 5px 0;
 }
 
-h2, h3 { /* Subtítulos */
+h2, h3 {
     color: #5a3a1a;
     text-align: center;
     margin-top: 5px;
     margin-bottom: 5px;
+    font-size: clamp(1em, 3vw, 1.2em);
 }
 
 /* Trilha da Lealdade */
 #allegiance-track-area {
-    margin-bottom: 10px; /* Reduzida margem inferior */
-    padding: 8px;
+    margin-bottom: 8px;
+    padding: 5px;
     background-color: #e8dcbA;
     border-radius: 6px;
-    flex-shrink: 0; /* Não encolhe */
+    flex-shrink: 0;
 }
 #allegiance-track {
     display: flex;
-    justify-content: space-around;
     align-items: center;
     position: relative;
-    height: 40px; /* Altura ligeiramente reduzida */
+    height: 35px; /* Menor */
     background-image: linear-gradient(to right, #d6a0a0, #d8c0a0, #a0c0a0);
     border-radius: 4px;
 }
 .track-space {
-    padding: 4px 8px;
+    padding: 2px 4px;
     border: 1px solid #ccc;
     background-color: rgba(255,255,255,0.7);
     border-radius: 4px;
-    font-size: 0.75em; /* Fonte menor para caber melhor */
+    font-size: clamp(0.6em, 1.8vw, 0.75em); /* Fonte bem pequena */
     text-align: center;
     flex: 1;
+    white-space: nowrap; /* Evita quebra de linha no texto dos espaços */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adiciona "..." se o texto for muito grande */
 }
 #allegiance-marker {
     position: absolute;
-    width: 28px; /* Marcador um pouco menor */
-    height: 28px;
+    width: 24px;
+    height: 24px;
     background-color: #4a2c0a;
     color: white;
     border-radius: 50%;
@@ -73,133 +77,133 @@ h2, h3 { /* Subtítulos */
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    font-size: 0.8em;
     transition: left 0.5s ease-in-out;
-    border: 2px solid white;
-    box-shadow: 0 0 5px black;
+    border: 1px solid white;
+    box-shadow: 0 0 3px black;
     z-index: 10;
 }
 
 /* Áreas dos Jogadores e Tabuleiro */
 #game-board {
     display: grid;
-    grid-template-columns: 1fr minmax(180px, 0.4fr) 1fr; /* Coluna da coroa com min/max */
-    gap: 10px; /* Espaçamento reduzido */
-    flex-grow: 1; /* O tabuleiro principal ocupa o espaço vertical disponível */
-    overflow: hidden; /* Evita que o conteúdo do tabuleiro estoure */
-    min-height: 400px; /* Altura mínima para o tabuleiro */
+    grid-template-columns: 1fr minmax(100px, 0.3fr) 1fr; /* Coroa mais estreita em telas pequenas */
+    gap: 5px;
+    flex-grow: 1;
+    overflow: hidden;
+    min-height: 0; /* Permite que o grid encolha mais se necessário */
 }
 
 .player-area {
     background-color: #faf5e9;
-    padding: 10px;
+    padding: 5px;
     border-radius: 6px;
     border: 1px solid #d8c0a0;
     display: flex;
-    flex-direction: column; /* Organiza stats, zonas e cartas verticalmente */
-    overflow: hidden; /* Para controlar o conteúdo interno */
-    min-height: 380px;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 280px; /* Altura mínima para caber stats e algumas cartas */
 }
 .player-area h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 1.1em;
+    margin-bottom: 5px;
+    font-size: clamp(0.9em, 2.5vw, 1.1em);
 }
 .player-stats, .zones-display {
-    font-size: 0.85em;
-    margin-bottom: 8px;
-    flex-shrink: 0; /* Não encolhe */
+    font-size: clamp(0.7em, 2vw, 0.85em);
+    margin-bottom: 5px;
+    flex-shrink: 0;
+    line-height: 1.3; /* Melhora leitura em fontes pequenas */
 }
 .zones-display span { font-weight: bold; }
 
 #crown-zone-area {
     background-color: #fffacd;
-    padding: 10px;
+    padding: 8px;
     border-radius: 6px;
     text-align: center;
     border: 2px dashed #ffd700;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza conteúdo da coroa */
+    justify-content: center;
 }
 #crown-zone-area h2 {
-    font-size: 1.2em;
+    font-size: clamp(1em, 3vw, 1.2em);
 }
 #crown-zone-area p {
-    font-size: 0.9em;
-}
-#crown-zone-area span {
-    font-weight: bold;
-    font-size: 1em;
+    font-size: clamp(0.8em, 2.2vw, 0.9em);
+    margin: 3px 0;
 }
 
 /* Cartas */
-.hand { /* Mão do jogador */
-    display: flex;
-    flex-wrap: wrap; /* Permite que as cartas quebrem linha */
-    gap: 6px;
-    background-color: #e0d6c3;
-    padding: 8px;
-    border-radius: 4px;
-    margin-top: 5px;
-    align-items: flex-start; /* Alinha as cartas no topo */
-    overflow-y: auto; /* Barra de rolagem se muitas cartas */
-    flex-grow: 1; /* Ocupa espaço vertical disponível na player-area */
-    min-height: 160px; 
-}
-.played-cards-zone { /* Cartas jogadas (jogador e oponente) */
+.hand, .played-cards-zone {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    background-color: #e9e0ce;
-    padding: 6px;
+    gap: 4px; /* Menor espaçamento */
+    padding: 4px;
     border-radius: 4px;
     margin-top: 5px;
     align-items: flex-start;
-    overflow-y: auto; /* Barra de rolagem se muitas cartas */
-    min-height: 160px; 
-    flex-shrink: 0; /* Para não ser esmagada se a mão crescer muito */
+    overflow-y: auto;
+    background-color: #e0d6c3;
+}
+/* Variável CSS para altura da carta, facilita ajustes */
+:root {
+    --card-width-small: 60px;
+    --card-height-small: calc(var(--card-width-small) / 9 * 16); /* ~106px */
+    --card-width-medium: 70px;
+    --card-height-medium: calc(var(--card-width-medium) / 9 * 16); /* ~124px */
+    --card-width-large: 80px;
+    --card-height-large: calc(var(--card-width-large) / 9 * 16); /* ~142px */
+}
+
+.hand {
+    flex-grow: 1; /* Mão ocupa mais espaço */
+    min-height: calc(var(--card-height-small)); 
+}
+.played-cards-zone {
+    min-height: calc(var(--card-height-small)); 
+    background-color: #e9e0ce;
+    flex-shrink: 0;
+    overflow: scroll; 
 }
 
 .card {
-    width: 80px;     /* Largura da carta */
-    height: 142px;    /* Altura da carta */
-    border: 1px solid #734d26; /* Borda mais fina */
-    border-radius: 5px;
+    width: var(--card-width-small);
+    height: var(--card-height-small);
+    border: 1px solid #734d26;
+    border-radius: 4px; 
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     position: relative;
     overflow: hidden;
     background-color: #505050;
-    flex-shrink: 0; /* Para não encolher dentro do flex container da mão/zona */
+    flex-shrink: 0;
 }
 .card:hover {
-    transform: scale(1.05); /* Efeito de hover um pouco mais sutil */
-    box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    transform: scale(1.08); 
     z-index: 20;
 }
-
 .card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 4px; /* Levemente menor que o card para a borda aparecer */
+    border-radius: 3px;
 }
-
 
 /* Controles do Jogo */
 #game-controls {
     text-align: center;
-    padding: 8px;
+    padding: 5px;
     background-color: #e8dcbA;
     border-radius: 6px;
-    flex-shrink: 0; /* Não encolhe */
-    margin-top: 10px; /* Adiciona margem superior */
+    flex-shrink: 0;
+    margin-top: 8px;
 }
 #end-turn-button {
-    padding: 8px 15px; /* Botão um pouco menor */
-    font-size: 0.9em;
+    padding: 6px 10px;
+    font-size: clamp(0.8em, 2.5vw, 0.9em);
     background-color: #5a3a1a;
     color: white;
     border: none;
@@ -207,78 +211,47 @@ h2, h3 { /* Subtítulos */
     cursor: pointer;
     transition: background-color 0.2s;
 }
-#end-turn-button:hover {
-    background-color: #7b5a3a;
-}
-#end-turn-button:disabled {
-    background-color: #9e8a76;
-    cursor: not-allowed;
-}
+#end-turn-button:hover { background-color: #7b5a3a; }
+#end-turn-button:disabled { background-color: #9e8a76; cursor: not-allowed; }
+
 #game-message {
-    margin: 8px 0;
+    margin: 5px 0;
     font-weight: bold;
     min-height: 1.1em;
-    font-size: 0.9em;
+    font-size: clamp(0.75em, 2.2vw, 0.9em);
 }
 #deck-info {
-    font-size: 0.8em;
-    margin-top: 5px;
+    font-size: clamp(0.65em, 2vw, 0.8em);
+    margin-top: 3px;
 }
 
 /* Tooltip */
 .tooltip {
     display: none;
-    position: fixed; 
-    background-color: rgba(20, 20, 20, 0.96);
+    position: fixed;
+    background-color: rgba(20, 20, 20, 0.97); 
     color: #f0f0f0;
-    padding: 10px; 
-    border-radius: 5px;
-    font-size: 0.85em; 
+    padding: 8px;
+    border-radius: 4px;
+    font-size: clamp(0.75em, 2.2vw, 0.85em); 
     z-index: 1000;
     pointer-events: none;
     border: 1px solid #555;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.5);
-    max-width: 260px; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    max-width: clamp(180px, 50vw, 260px); 
     line-height: 1.4;
 }
-.tooltip .card-name-tooltip {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #ffd700;
-    margin-bottom: 6px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 4px;
-}
+.tooltip .card-name-tooltip { font-size: 1.1em; font-weight: bold; color: #ffd700; margin-bottom: 5px; border-bottom: 1px solid #444; padding-bottom: 3px; }
 .tooltip .card-type-tooltip,
 .tooltip .card-cost-tooltip,
 .tooltip .card-influence-tooltip,
-.tooltip .card-allegiance-tooltip {
-    font-size: 0.9em;
-    margin-bottom: 3px;
-}
-.tooltip .card-cost-tooltip {
-    color: #ffae42;
-}
-.tooltip .card-text-tooltip {
-    font-style: italic;
-    color: #bdbdbd;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 0.8em;
-}
-.tooltip .card-influence-tooltip {
-    color: #90ee90;
-}
-.tooltip .card-allegiance-tooltip {
-    color: #add8e6;
-    font-weight: bold;
-}
-.tooltip .allegiance-active {
-    color: #ffeb3b;
-}
-.tooltip .allegiance-inactive {
-    color: #9e9e9e;
-}
+.tooltip .card-allegiance-tooltip { font-size: 0.95em; margin-bottom: 3px; }
+.tooltip .card-cost-tooltip { color: #ffae42; }
+.tooltip .card-text-tooltip { font-style: italic; color: #bdbdbd; margin-top: 4px; margin-bottom: 4px; font-size: 0.9em; }
+.tooltip .card-influence-tooltip { color: #90ee90; }
+.tooltip .card-allegiance-tooltip { color: #add8e6; font-weight: bold; }
+.tooltip .allegiance-active { color: #ffeb3b; }
+.tooltip .allegiance-inactive { color: #9e9e9e; }
 
 /* Estilos do Modal de Tutorial */
 .modal-overlay {
@@ -287,11 +260,11 @@ h2, h3 { /* Subtítulos */
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente */
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000; 
+    z-index: 2000;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0s linear 0.3s;
@@ -304,49 +277,50 @@ h2, h3 { /* Subtítulos */
 }
 
 .modal-content {
-    background-color: #fff8dc; 
-    color: #4a2c0a; 
-    padding: 30px;
+    background-color: #fff8dc;
+    color: #4a2c0a;
+    padding: 20px; /* Reduzido para telas menores */
     border-radius: 10px;
-    border: 3px solid #8b4513; 
-    width: 80%;
-    max-width: 650px;
-    max-height: 85vh; /* Aumentado um pouco para mais conteúdo */
+    border: 3px solid #8b4513;
+    width: 90%; /* Mais largo em telas pequenas */
+    max-width: 600px; /* Um pouco menor */
+    max-height: 85vh;
     overflow-y: auto;
     box-shadow: 0 5px 20px rgba(0,0,0,0.4);
     position: relative;
-    font-size: 0.9em;
-    line-height: 1.6;
+    font-size: clamp(0.8em, 2.5vw, 0.9em);
+    line-height: 1.5; /* Ajustado */
 }
 
 .modal-content h2 {
     color: #5a3a1a;
     text-align: center;
     margin-top: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #d2b48c; 
-    padding-bottom: 10px;
+    margin-bottom: 15px; /* Reduzido */
+    border-bottom: 1px solid #d2b48c;
+    padding-bottom: 8px; /* Reduzido */
+    font-size: 1.3em; /* Ajustado */
 }
 
 .modal-content p, .modal-content ul, .modal-content ol {
-    margin-bottom: 15px;
+    margin-bottom: 12px; /* Reduzido */
 }
 
 .modal-content strong {
-    color: #8b0000; 
+    color: #8b0000;
 }
 
 .modal-content ul, .modal-content ol {
-    padding-left: 25px;
+    padding-left: 20px; /* Reduzido */
 }
 
 .modal-close-button {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    top: 8px; /* Ajustado */
+    right: 12px; /* Ajustado */
     background: none;
     border: none;
-    font-size: 2.5em; 
+    font-size: 2.2em; /* Ajustado */
     color: #8b4513;
     cursor: pointer;
     line-height: 1;
@@ -354,4 +328,64 @@ h2, h3 { /* Subtítulos */
 }
 .modal-close-button:hover {
     color: #5a3a1a;
+}
+
+/* --- Media Queries --- */
+
+/* Tablets e Desktops Pequenos */
+@media (min-width: 600px) {
+    #game-container { padding: 10px; }
+    h1 { margin: 5px 0 10px 0; }
+    #allegiance-track-area { padding: 8px; margin-bottom: 10px; }
+    #allegiance-track { height: 40px; }
+    #allegiance-marker { width: 28px; height: 28px; font-size: 1em; border-width: 2px; }
+    
+    #game-board { grid-template-columns: 1fr minmax(150px, 0.35fr) 1fr; gap: 8px; }
+    .player-area { padding: 8px; min-height: 320px; }
+    .player-stats, .zones-display { margin-bottom: 8px;}
+
+    .card {
+        width: var(--card-width-medium);
+        height: var(--card-height-medium);
+        border-radius: 5px;
+    }
+     .card img { border-radius: 4px; }
+    .hand, .played-cards-zone { gap: 5px; padding: 6px; min-height: calc(var(--card-height-medium) + 12px); }
+
+
+    #game-controls { padding: 8px; margin-top: 10px; }
+    #end-turn-button { padding: 8px 15px; }
+    #game-message { margin: 8px 0; }
+    #deck-info { margin-top: 5px; }
+    .modal-content { padding: 25px; max-width: 650px; } /* Volta para o max-width anterior */
+}
+
+/* Desktops Médios e Maiores */
+@media (min-width: 992px) {
+    body { font-size: 16px; } 
+    #game-container { padding: 15px; }
+     h1 { margin: 10px 0 15px 0; }
+    #allegiance-track-area { padding: 10px; margin-bottom: 15px; }
+    .track-space { font-size: 0.8em;}
+
+    #game-board { grid-template-columns: 1fr minmax(180px, 0.4fr) 1fr; gap: 10px; }
+    .player-area { padding: 10px; min-height: 380px; }
+    .player-stats, .zones-display { font-size: 0.9em; margin-bottom: 10px;}
+
+    .card {
+        width: var(--card-width-large);
+        height: var(--card-height-large);
+    }
+    .hand, .played-cards-zone { gap: 6px; padding: 8px; min-height: calc(var(--card-height-large) + 16px); }
+
+    #game-controls { padding: 10px; }
+    #end-turn-button { padding: 10px 20px; font-size: 1em; }
+    #game-message { font-size: 1em; }
+    #deck-info { font-size: 0.9em; }
+    .modal-content { padding: 30px; max-width: 700px; }
+}
+
+/* Ajustes para telas muito largas, se necessário */
+@media (min-width: 1400px) {
+    #game-board { grid-template-columns: 1fr minmax(200px, 0.3fr) 1fr; } 
 }
